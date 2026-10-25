@@ -1,0 +1,16 @@
+name = "link-cf-backend"
+main = "worker.js"
+compatibility_date = "2026-08-01"
+
+# ── D1 database (replaces the Google Sheet) ─────────────────────────
+# After running `wrangler d1 create link-db`, paste the database_id it
+# prints into database_id below.
+[[d1_databases]]
+binding = "DB"
+database_name = "link-db"
+database_id = "18dabee7-204f-4cc9-98ef-3b32f8f1e36a"
+
+# ── R2 bucket (replaces the Google Drive uploads folder) ────────────
+[[r2_buckets]]
+binding = "UPLOADS"
+bucket_name = "link-uploads"

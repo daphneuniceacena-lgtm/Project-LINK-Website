@@ -1,0 +1,209 @@
+/* ════════════════════════════════════════════════════════════════════
+   ENHANCE.CSS — modernization layer
+   Loaded AFTER style.css. Doesn't redefine your design tokens or colors —
+   only adds motion, depth, and polish on top of the existing system so
+   nothing you already built gets overwritten.
+
+   Developed 2026 by Daphne Eunice U. Acena for Project LINK. See GitHub Repository
+   for other information. 
+    Should you have any questions and concerns, contact me through the following channels: 
+          email: daphneuniceacena@gmail.com 
+          instagram: @d_4cena 
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── Global easing / smoothness ──────────────────────────────────── */
+:root{
+  --ease-out: cubic-bezier(.16,1,.3,1);
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
+}
+
+/* ── Page transitions ────────────────────────────────────────────── */
+.page{ will-change: opacity, transform; }
+.page.page-enter{
+  animation: pageIn .45s var(--ease-out) both;
+}
+@keyframes pageIn{
+  from{ opacity:0; transform: translateY(14px) scale(.99); }
+  to{ opacity:1; transform: translateY(0) scale(1); }
+}
+
+/* ── Staggered card / row entrance ──────────────────────────────── */
+.stagger-in{
+  animation: staggerIn .5s var(--ease-out) both;
+  animation-delay: calc(var(--stagger-i, 0) * 45ms);
+}
+@keyframes staggerIn{
+  from{ opacity:0; transform: translateY(10px); }
+  to{ opacity:1; transform: translateY(0); }
+}
+
+/* ── Cards: lift on hover ────────────────────────────────────────── */
+.card, .stat-card{
+  transition: transform .28s var(--ease-out), box-shadow .28s var(--ease-out);
+}
+.card:hover, .stat-card:hover{
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ── Stat numbers: gentle count-up pulse when they change ─────────── */
+.s-num{
+  display:inline-block;
+  transition: transform .25s var(--ease-spring);
+}
+.s-num.bump{ transform: scale(1.18); }
+
+/* ── Buttons: press + shine ─────────────────────────────────────── */
+.btn{
+  position:relative;
+  overflow:hidden;
+  transition: transform .18s var(--ease-out), box-shadow .18s var(--ease-out), filter .18s;
+}
+.btn:hover{ filter:brightness(1.05); }
+.btn:active{ transform: scale(.96); }
+.btn-primary{ box-shadow: 0 2px 10px rgba(42,122,82,.25); }
+.btn-primary:hover{ box-shadow: 0 6px 18px rgba(42,122,82,.35); transform: translateY(-1px); }
+
+/* ── Sidebar nav items: sliding active indicator ────────────────── */
+.nav-item{
+  position:relative;
+  transition: background .25s var(--ease-out), color .25s var(--ease-out), padding-left .25s var(--ease-out);
+}
+.nav-item::before{
+  content:'';
+  position:absolute; left:0; top:50%; transform:translateY(-50%);
+  width:3px; height:0;
+  background: var(--g3, #2a7a52);
+  border-radius:0 4px 4px 0;
+  transition: height .28s var(--ease-spring);
+}
+.nav-item:hover{ padding-left: 4px; }
+.nav-item.active::before{ height:70%; }
+
+/* ── Modals: scale + fade in, backdrop blur ─────────────────────── */
+.modal-overlay{
+  animation: overlayIn .25s var(--ease-out) both;
+  backdrop-filter: blur(3px);
+}
+@keyframes overlayIn{ from{ opacity:0 } to{ opacity:1 } }
+.modal-box{
+  animation: modalIn .32s var(--ease-spring) both;
+}
+@keyframes modalIn{
+  from{ opacity:0; transform: translateY(18px) scale(.96); }
+  to{ opacity:1; transform: translateY(0) scale(1); }
+}
+
+/* ── Form fields: focus glow ─────────────────────────────────────── */
+input, select, textarea{
+  transition: border-color .2s var(--ease-out), box-shadow .2s var(--ease-out);
+}
+input:focus, select:focus, textarea:focus{
+  box-shadow: 0 0 0 3px rgba(74,171,124,.18);
+}
+
+/* ── Toasts: slide + spring in ──────────────────────────────────── */
+.toast, [class*="toast"]{
+  animation: toastIn .4s var(--ease-spring) both;
+}
+@keyframes toastIn{
+  from{ opacity:0; transform: translateX(24px); }
+  to{ opacity:1; transform: translateX(0); }
+}
+
+/* ── Empty states: soft breathing icon ──────────────────────────── */
+.empty-state i{
+  animation: softFloat 3.2s ease-in-out infinite;
+}
+@keyframes softFloat{
+  0%,100%{ transform: translateY(0); }
+  50%{ transform: translateY(-6px); }
+}
+
+/* ── Skeleton loading pulse (add class="skeleton" via JS while awaiting fetch) ── */
+.skeleton{
+  position:relative;
+  overflow:hidden;
+  background: var(--gray6);
+  border-radius: var(--radius-sm);
+  color: transparent !important;
+}
+.skeleton{ animation: skeletonPulse 1.3s ease-in-out infinite; }
+@keyframes skeletonPulse{ 0%,100%{ opacity:1 } 50%{ opacity:.55 } }
+
+/* ── Login screen: slower ambient background zoom ───────────────── */
+.login-bg{
+  animation: bgZoom 24s ease-in-out infinite alternate;
+}
+@keyframes bgZoom{
+  from{ transform: scale(1); }
+  to{ transform: scale(1.08); }
+}
+.login-card{
+  animation: loginCardIn .6s var(--ease-out) both;
+}
+@keyframes loginCardIn{
+  from{ opacity:0; transform: translateY(24px); }
+  to{ opacity:1; transform: translateY(0); }
+}
+
+/* ── Table rows: quick highlight on hover ───────────────────────── */
+.tbl tbody tr{
+  transition: background .18s var(--ease-out);
+}
+.tbl tbody tr:hover{
+  background: var(--g9, #f3fcf7);
+}
+
+/* ── Reduced motion: respect user/OS preference ─────────────────── */
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}
+
+
+/* Responsive fixes: carousel, SWC calendar and counselor editing */
+html, body { max-width:100%; overflow-x:hidden; }
+img, video, iframe { max-width:100%; }
+.calendar-layout, .cal-layout, .appointment-layout, .about-admin-layout { min-width:0; }
+.cal-grid, #cal-grid, #admin-cal-grid, #acal-grid { grid-template-columns:repeat(7,minmax(0,1fr)); width:100%; min-width:0; gap:clamp(2px,1vw,6px); }
+.cal-day, .cal-weekday { min-width:0; }
+.tbl-wrap { max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+.counselor-grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr)); }
+#counselor-modal { z-index:9999; }
+@media (max-width:900px) {
+  .main-content, .content, .page, .card, .about-admin-layout { min-width:0; }
+  .about-admin-layout { grid-template-columns:minmax(0,1fr) !important; }
+  .calendar-layout, .cal-layout, .appointment-layout { grid-template-columns:minmax(0,1fr) !important; }
+  .cal-day { min-height:36px; padding:5px 0; }
+  .cal-weekday { font-size:clamp(9px,2.4vw,12px); }
+  .time-slots, #time-slots { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (max-width:520px) {
+  .cal-day { min-height:32px; font-size:12px; }
+  .time-slots, #time-slots { grid-template-columns:minmax(0,1fr); }
+  .admin-toolbar { flex-wrap:wrap; gap:10px; }
+  .admin-toolbar > * { min-width:0; }
+  .counselor-card { min-width:0; }
+  .chat-panel { width:min(calc(100vw - 24px),380px); right:12px; }
+}
+
+
+/* ── Hero carousel: ONE fixed rectangle per screen size ──────────────
+   The photo is never cropped (object-fit: contain) and never leaves empty
+   bars: the same photo is blurred behind it to fill the frame. */
+.hero-carousel{position:relative;width:100%;min-width:0;aspect-ratio:16/7;height:auto;min-height:0;max-height:460px;overflow:hidden;background:var(--g8);border-radius:var(--radius)}
+.hero-carousel .carousel-track{display:flex;height:100%;min-width:0}
+.hero-carousel .carousel-slide{position:relative;flex:0 0 100%;width:100%;min-width:100%;height:100%;overflow:hidden;background:var(--g8)}
+.hero-carousel .carousel-slide::before{content:'';position:absolute;inset:-24px;background-image:var(--slide-bg,none);background-size:cover;background-position:center;filter:blur(22px) brightness(.9) saturate(1.1);transform:translateZ(0)}
+.hero-carousel .carousel-slide img{position:relative;z-index:1;display:block;width:100%;height:100%;max-height:none;object-fit:contain;object-position:center;background:transparent;-webkit-user-drag:none;user-select:none}
+@media (max-width:1100px){ .hero-carousel{aspect-ratio:16/9;max-height:420px} }
+@media (max-width:700px){
+  .hero-carousel{aspect-ratio:16/10;max-height:340px;border-radius:12px}
+  .carousel-btn{width:36px;height:36px;font-size:14px}
+  #carousel-prev{left:8px} #carousel-next{right:8px}
+}
+#counselor-modal .modal-box{max-width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow-y:auto}
